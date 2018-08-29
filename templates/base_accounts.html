@@ -13,5 +13,39 @@
     </h1>
     {% block content %}
     {% endblock %}
-  </div>
+  <script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
+  <script src="{% static 'js/popper.min.js' %}"></script>
+  </div><script type ="text/javascript">
+    function checkPasswordMatch() {
+
+}
+
+$(document).ready(function () {
+   $("#id_password2").change(checkPasswordMatch);
+});
+$(document).on('submit', '#new_user_form', function(e) {
+        e.preventDefault();
+        var password = $("#id_password1").val();
+        var confirmPassword = $("#id_password2").val();
+
+    if (password != confirmPassword)
+        alert("Passwords do not match!");
+    else {
+        $.ajax({
+            type: 'POST',
+            url: '/signup/',
+            data: {
+                name: $('#id_username').val(),
+                email: $('#id_email').val(),
+                password1: $('#id_password1').val(),
+                password2: $('#id_password2').val(),
+                csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
+            },
+            success: function () {
+                alert("User created");
+            }
+        })
+    };
+    })
+</script>
 {% endblock %}

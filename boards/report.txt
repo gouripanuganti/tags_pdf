@@ -1,0 +1,97 @@
+from reportlab.pdfgen import canvas
+from reportlab.lib.pagesizes import letter, A4
+from django.core.files.storage import FileSystemStorage
+from django.http import HttpResponse
+
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
+from reportlab.lib.styles import getSampleStyleSheet
+from reportlab.lib.units import inch
+
+
+def create_simple_form():
+    c = canvas.Canvas('report.pdf', pagesize=A4)
+    width, height = A4
+    reported_by = "Saurabh"
+    date_of_report = "20/08/2018"
+    account_name = "Aiyana"
+    incident_no = "12356476"
+    c.setFillColorRGB(0.097,0.097,0.4375)
+    c.setFont("Helvetica-Bold", 20)
+    c.drawString(10, 770, 'Incident Report Template')
+    c.drawImage("doc.jpg", 470, 720, width=120, height=160, preserveAspectRatio=True)
+    c.setFont("Helvetica-Bold", 14)
+    c.setFillColorRGB(0.097, 0.097, 0.4375)
+    c.drawString(10, 700, 'REPORTED BY:')
+    c.drawString(130, 700, reported_by)
+    c.line(120,698,280,698)
+    c.drawString(300, 700, 'DATE OF REPORT:')
+    c.drawString(450, 700, date_of_report)
+    c.line(440, 698, 580, 698)
+    c.drawString(10, 670, 'ACCOUNT NAME:')
+    c.drawString(150, 670, account_name)
+    c.line(140,668,280,668)
+    c.drawString(300, 670, 'INCIDENT NO.:')
+    c.drawString(430, 670, incident_no)
+    c.line(420, 668, 580, 668)
+    c.setFillColorRGB(0.097, 0.097, 0.4375)
+    c.rect(10, 600, 580, 40, fill=1)
+    c.setFillColorRGB(1, 1, 1)
+    c.drawString(200, 615, "INCIDENT INFORMATION")
+    c.setFillColorRGB(0.097, 0.097, 0.4375)
+    c.drawString(10, 550, 'INCIDENT TYPE:')
+    #c.drawString(150, 670, account_name)
+    c.line(130, 548, 280, 548)
+    c.drawString(300, 550, 'DATE OF INCIDENT:')
+    #c.drawString(430, 670, incident_no)
+    c.line(450, 548, 580, 548)
+    c.drawString(10, 510, 'ORGANIZATION:')
+    #c.drawString(430, 670, incident_no)
+    c.line(140, 508, 580, 508)
+    c.drawString(10, 470, 'SPECIFIC AREA OF LOCATION (if applicable):')
+    # c.drawString(430, 670, incident_no)
+    c.line(330, 468, 580, 468)
+    c.drawString(10, 430, 'INCIDENT HOMEPAGE DESCRIPTION:')
+    # c.drawString(430, 670, incident_no)
+    c.line(330, 428, 580, 428)
+    c.drawString(10, 390, 'INCIDENT DETAILS:')
+    # c.drawString(430, 670, incident_no)
+    c.line(10, 360, 580, 360)
+    c.drawString(10, 320, 'NAME OF INCIDENT TARGET(S):')
+    c.drawString(10, 290, '1:')
+    # c.drawString(430, 670, incident_no)
+    c.line(20, 288, 580, 288)
+    c.drawString(10, 250, 'NAME OF INCIDENT PERPETRATOR(S)')
+    c.drawString(10, 220, '1:')
+    # c.drawString(430, 670, incident_no)
+    c.line(20, 218, 580, 218)
+    c.drawString(10, 180, 'FLAG?')
+    # c.drawString(430, 670, incident_no)
+    c.drawString(140, 180, 'Media:')
+    c.line(200, 178, 300, 178)
+    c.drawString(310, 180, 'Media Included:')
+    c.line(450, 178, 580, 178)
+    c.drawString(10, 130, 'Assigned To:')
+    c.drawString(130, 130, reported_by)
+    c.line(120, 128, 280, 128)
+    c.drawString(300,130, 'Escalated To:')
+    #c.drawString(450, 700, date_of_report)
+    c.line(440, 128, 580, 128)
+    c.drawString(10, 100, 'Incident Tags:')
+    #c.drawString(150, 670, account_name)
+    c.line(140, 98, 280, 98)
+    c.drawString(300, 100, 'Messenger:')
+    #c.drawString(430, 670, incident_no)
+    c.line(420, 98, 580, 98)
+    c.drawString(10, 60, 'Additional Question:')
+    #c.drawString(130, 700, reported_by)
+    c.line(170, 58, 300, 58)
+    c.line(420, 58, 580, 58)
+    c.drawString(10, 30, 'Additional Question:')
+    c.line(170, 28, 300, 28)
+    c.line(420, 28, 580, 28)
+
+    c.save()
+
+
+if __name__ == '__main__':
+    create_simple_form()

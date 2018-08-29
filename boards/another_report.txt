@@ -1,0 +1,123 @@
+import time
+from reportlab.lib.enums import TA_JUSTIFY
+from reportlab.lib.pagesizes import letter
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Image
+from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+from reportlab.lib.units import inch
+from reportlab.platypus import (Flowable, Paragraph,
+                                SimpleDocTemplate, Spacer)
+
+class MCLine(Flowable):
+
+    # ----------------------------------------------------------------------
+    def __init__(self, width, xaxis,height=0):
+        Flowable.__init__(self)
+        self.width = width
+        self.height = height
+        self.x = xaxis
+
+    # ----------------------------------------------------------------------
+    def __repr__(self):
+        return "Line(w=%s)" % self.width
+
+    # ----------------------------------------------------------------------
+    def draw(self):
+        """
+        draw the line
+        """
+        self.canv.line(self.x, self.height, self.width, self.height)
+
+class MCRect(Flowable):
+
+    # ----------------------------------------------------------------------
+    def __init__(self,xaxis, yaxis,width,height):
+        Flowable.__init__(self)
+        self.width = width
+        self.height = height
+        self.x = xaxis
+        self.y = yaxis
+
+    # ----------------------------------------------------------------------
+    def __repr__(self):
+        return "Rect(w=%s)" % self.width
+
+    # ----------------------------------------------------------------------
+    def draw(self):
+        """
+        draw the Rectangle
+        """
+        self.canv.setFillColorRGB(0.097, 0.097, 0.4375)
+        self.canv.rect(self.x, self.y, self.width, self.height, fill = 1)
+        self.canv.setFillColorRGB(1, 1, 1)
+        self.canv.setFont("Helvetica-Bold", 14)
+        self.canv.drawString(200, 15, "INCIDENT INFORMATION")
+
+doc = SimpleDocTemplate("another_report.pdf", pagesize=letter,
+                        rightMargin=10, leftMargin=10,
+                        topMargin=10, bottomMargin=10)
+Story = []
+logo = "doc.jpg"
+reported_by = "Saurabh"
+date_of_report = "20/08/2018"
+account_name = "Aiyana"
+incident_no = "12356476"
+formatted_time = time.ctime()
+incident_type = "Sev1"
+date_of_inc = "20/08/2018"
+report_name = "Incident Report Template"
+im = Image(logo, 1 * inch, 0.5 * inch)
+im.hAlign = 'RIGHT'
+Story.append(im)
+
+styles = getSampleStyleSheet()
+styles.add(ParagraphStyle(name='Justify', alignment=TA_JUSTIFY))
+ptext = '<font name = Helvetica-Bold size=20 color = midnightblue>%s</font>' % report_name
+Story.append(Paragraph(ptext, styles["Normal"]))
+Story.append(Spacer(1, 12))
+Story.append(Spacer(1, 12))
+Story.append(Spacer(1, 12))
+# Create return address
+line = MCLine(200,110, 0)
+ptext = '<font size=14>REPORTED BY: %s &nbsp; &nbsp; &nbsp; ' \
+        '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' \
+        '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DATE OF REPORT:  %s </font>' % (reported_by, date_of_report)
+Story.append(Paragraph(ptext, styles["Normal"]))
+Story.append(Spacer(1, 5))
+Story.append(line)
+line1 = MCLine(410, 550, 0)
+Story.append(line1)
+Story.append(Spacer(1, 12))
+line = MCLine(200,110, 0)
+ptext = '<font size=14>Account Name: &nbsp; %s &nbsp; &nbsp; &nbsp; ' \
+        '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' \
+        '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; ' \
+        'INCIDENT No.: &nbsp;&nbsp;&nbsp;&nbsp; %s </font>' % (account_name, incident_no)
+Story.append(Paragraph(ptext, styles["Normal"]))
+Story.append(Spacer(1, 5))
+Story.append(line)
+line1 = MCLine(410, 550, 0)
+Story.append(line1)
+Story.append(Spacer(1, 15))
+rect = MCRect(0, 0, 580, 40)
+Story.append(rect)
+Story.append(Spacer(1, 15))
+line = MCLine(110,200, 0)
+ptext = '<font size=14>INCIDENT TYPE: %s &nbsp; &nbsp; &nbsp; ' \
+        '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' \
+        '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; ' \
+        'DATE OF INCIDENT.: &nbsp; %s </font>' % (incident_type, date_of_inc)
+Story.append(Paragraph(ptext, styles["Normal"]))
+Story.append(Spacer(1, 5))
+Story.append(line)
+line1 = MCLine(420, 550, 0)
+Story.append(line1)
+Story.append(Spacer(1, 15))
+
+# fs = FileSystemStorage("/tmp")
+#     with fs.open("somefilename.pdf") as pdf:
+#         response = HttpResponse(pdf, content_type='application/pdf')
+#         response['Content-Disposition'] = 'attachment; filename="somefilename.pdf"'
+#         return response
+#
+#     return response
+doc.build(Story)

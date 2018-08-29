@@ -5,6 +5,7 @@ from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views.generic import UpdateView
+from django.http import HttpResponse
 
 from .forms import SignUpForm, UserInformationUpdateForm
 
@@ -12,9 +13,18 @@ def signup(request):
     if request.method == 'POST':
         form = SignUpForm(request.POST)
         if form.is_valid():
-            user = form.save()
-            auth_login(request, user)
-            return redirect('home')
+            username = request.POST['name']
+            email = request.POST['email']
+            password = request.POST['password1']
+            User.objects.create_user(username=username,
+                                 email=email,
+                                 password=password)
+        # form = SignUpForm(request.POST)
+        # if form.is_valid():
+        #     user = form.save()
+        #     auth_login(request, user)
+        #     #return redirect('home')
+        #     return HttpResponse()
     else:
         form = SignUpForm()
     return render(request, 'signup.html', {'form': form})

@@ -9,7 +9,7 @@ from .models import *
 from .render import *
 import requests
 from threading import Thread, activeCount
-
+from django.views.decorators.csrf import csrf_exempt
 
 
 def home(request):
@@ -44,16 +44,7 @@ def new_topic(request, pk):
 
 
 def send_email(file: list):
-    r = requests.post(
-        "https://api.mailgun.net/v3/sandbox4033006281c74f2c8758f8210a8dcfbb.mailgun.org/messages",
-        auth=("api", "95a85db7b66ca127ff388293475b1238-7efe8d73-41d5fa82"),
-        files=[("attachment", (file[0], open(file[1], "rb").read()))],
-        data={"from": "Mailgun Sandbox <postmaster@sandbox4033006281c74f2c8758f8210a8dcfbb.mailgun.org>",
-              "to": "Saurabh Tewary <tewary.saurabh@gmail.com>",
-              "subject": "Sales Report",
-              "text": "Requested Sales Report",
-              "html": "<html>Requested Sales Report</html>"})
-    return r
+   pass
 
 class Sale(View):
 
