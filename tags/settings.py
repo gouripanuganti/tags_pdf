@@ -25,7 +25,7 @@ SECRET_KEY = '9g#009td+=l8*ir_m&=*g8)1utom13)@j2@204xsc@^9)(!j*9'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['aws-demo-dev.us-east-2.elasticbeanstalk.com']
 
 
 # Application definition
