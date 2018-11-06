@@ -47,7 +47,7 @@ def send_email(file: list):
    pass
 
 class Sale(View):
-
+ 
     def get(self, request):
         sales = Sales.objects.all()
         today = timezone.now()
